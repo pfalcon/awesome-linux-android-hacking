@@ -185,6 +185,19 @@ More details:
 
 ## Android
 
+### How to configure udev rules for using adb over USB
+
+Create `/etc/udev/rules.d/99-android.rules` with content:
+```
+SUBSYSTEM=="usb", ATTR{idVendor}=="0bb4", MODE="0660", GROUP="plugdev"
+```
+
+Here, ``0bb4`` is a USB vendor ID, you may need to adjust it for your device;
+``plugdev`` - is typical pluggable device access group on most modern Linux
+distros.
+
+Based on: http://developer.android.com/tools/device.html
+
 ### How to connect adb over WiFi (or TCP/IP in general)
 On Android command line:
 ```
