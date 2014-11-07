@@ -215,6 +215,41 @@ adb connect <IP>:6565
 adb shell
 ```
 
+### How secure is ADB connection?
+
+ADB protocol does not seem to support encryption (protocol description:
+https://android.googlesource.com/platform/system/core/+/master/adb/protocol.txt).
+This means that using it over broadcasting non-encrypted physical medium (like
+Ethernet or public WiFi) is insecure.
+
+Until Android 4.2.2, protocol did not support authentication, which made it
+highly insecure. There are known exploits of trojan "charging stations" used
+to break into devices.
+
+In Android 4.2.1_r1, public key authentication was added to adb protocol:
+https://github.com/android/platform_system_core/commit/d5fcafaf41f8ec90986c813f75ec78402096af2d
+This requires ADB version 1.0.31 (available in SDK Platform-tools r16.0.1 or
+higher). User is required to confirm connection to a new ADB host on a device
+itself, for one time connection or to remember the approval. In the latter
+case, host key(s) are saved in `/data/misc/adb/adb_keys`. There can be
+pre-installed keys in `/adb_keys`.
+
+
+### How to verify ADB host fingerprint
+
+When connecting to a new ADB host, an Android device shows an RSA fingerprint,
+however, it takes some effort to check that this fingerprint actually belongs
+to a host.
+
+On a host, ADB public key is in $HOME/.android/adb_key.pub. To get its
+fingerprint:
+
+awk '{print $1}' < adbkey.pub|openssl base64 -A -d -a | openssl md5 -c
+
+
+Based on: http://nelenkov.blogspot.de/2013/02/secure-usb-debugging-in-android-422.html
+
+
 ### How to read Android logs
 On Android command line:
 ```
