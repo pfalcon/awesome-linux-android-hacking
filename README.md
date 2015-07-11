@@ -183,6 +183,56 @@ More details:
 [Documentation/kbuild/modules.txt](http://www.kernel.org/doc/Documentation/kbuild/modules.txt).
 
 
+### How to test network multicasting
+Multicasting is basis of many usability protocols and services (e.g. mDNS,
+UPNP, DLNA, etc.), and yet means to query/test/diagnose it are not widely
+known, if not to say obfuscated. At the same time, multicasting has known
+andregular issues, when used on network interfaces differing from Ethernet,
+for which it was initially conceived (these other networking types include
+WiFi/other wireless, loopback, etc.)
+
+Multicast is similar to broadcast, except individual hosts don't receive
+datagrams unconditionally, but need to join "multicast group" (other way
+to think about it is a PubSub pattern). Multicast groups are represented
+by special IP addresses, e.g. for IPv4 it's 224.0.0.0 to 239.255.255.255.
+Some multicast IPs have predefined (STD/RFC) meaning, other are supposedly
+can be (dynamically) allocated per purpose.
+
+224.0.0.1 is a "local network" predefined address. All hosts on current
+subnetwork are supposed to (auto)join it. In this regard, that address is
+similar to local network broadcast, 255.255.255.255. The basic means to
+test multicasting is ping this address:
+```
+ping 224.0.0.1
+```
+
+The expected outcome is that each host which is member of multicast group
+will respond (ping thus will receive duplicate responses and will report so).
+
+However:
+* A firewall will likely interfere. Note that broadcast/multicast pings are
+especially not firewall friendly, as replies are not received from
+destination of packet (ping packets are sent to 224.0.0.1, but received from
+individual host IPs). The easiest way to deal with this is usually to disable
+firewall during testing.
+* Besides firewall, modern Linux kernels ignore broadcast/multicast pings
+by default. To enable responses to such pings use:
+```
+echo "0" >/proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+```
+(needs to be done on each machine from which you want to receive responses
+of course).
+* The network interface used should have multicast support enabled, and
+e.g. loopback (lo) is notoriously known to not have it enabled by distros
+by default.
+
+If you have a normal Ethernet/WiFi interface, following first 2 suggestions
+should lead to `ping 224.0.0.1` to get responses at least from the host
+you run it on.
+
+For other multicast groups, they should be pingable as long as a socket
+bound to that group is active on a host.
+
 ## Android
 
 ### How to configure udev rules for using adb over USB
