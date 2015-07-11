@@ -233,6 +233,10 @@ you run it on.
 For other multicast groups, they should be pingable as long as a socket
 bound to that group is active on a host.
 
+To further diagnose multicast settings, refer to following /proc files:
+* `/proc/net/igmp` (IP-level multicast)
+* `/proc/net/dev_mcast` (Physical-level multicast)
+
 ## Android
 
 ### How to configure udev rules for using adb over USB
