@@ -510,9 +510,28 @@ make modules
 ```
 
 ### Is it possible to write console Dalvik apps?
-Yes, actually "am" and few other standard Android tools are actually
+Yes, actually "am", "pm" and few other standard Android tools are actually
 such, and are run via shell wrapper:
 https://android.googlesource.com/platform/frameworks/base/+/gingerbread/cmds/am/
+
+[hello-world.html](https://android.googlesource.com/platform/dalvik/+/gingerbread/docs/hello-world.html)
+from platform/dalvik/docs/ explains how:
+
+```
+# Create file Foo.java
+class Foo {
+    public static void main(String[] args) {
+        System.out.println("Hello, world");
+    }
+}
+```
+
+```
+javac Foo.java
+dx --dex --output=foo.jar Foo.class
+adb push foo.jar /sdcard
+adb shell dalvikvm -cp /sdcard/foo.jar Foo
+```
 
 ### I tried to flash a custom image to recovery partition (Android 4.x), however it doesn't boot and instead "red triangle of doom" is shown
 Assuming the image is correct for your type of device and flashed into
