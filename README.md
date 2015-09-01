@@ -237,6 +237,14 @@ To further diagnose multicast settings, refer to following /proc files:
 * `/proc/net/igmp` (IP-level multicast)
 * `/proc/net/dev_mcast` (Physical-level multicast)
 
+Few other points:
+* It's not required to be a member of multicast group to send a datagram
+to it.
+* To send a datagram to multicast address, sendto() call should be used,
+if reply is expected to be received on the same socket. connect() +
+send() won't work, because reply won't come from a multicast address, but
+reather from a real host address.
+
 ## Android
 
 ### How to configure udev rules for using adb over USB
