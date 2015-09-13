@@ -450,6 +450,8 @@ Getting Java class implementing service:
 service call activity 1598968902
 ```
 
+1598968902 (0x5f4e5446) is [INTERFACE_TRANSACTION](http://developer.android.com/reference/android/os/IBinder.html#INTERFACE_TRANSACTION).
+
 Prepare to dial number "123":
 ```
 service call phone 1 s16 123
