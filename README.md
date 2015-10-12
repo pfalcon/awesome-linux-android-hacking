@@ -436,6 +436,22 @@ immediately.
 These are defined in
 [system/core/include/private/android_filesystem_config.h](http://code.metager.de/source/xref/android/2.3.7/system/core/include/private/android_filesystem_config.h)
 
+### Is it possible to use stdout/stderr/printf/System.out.println/etc. in Android?
+
+Reference: http://developer.android.com/tools/debugging/debugging-log.html#viewingStd
+
+By default, Android redirects stdout, etc. to /dev/null. However,
+`log.redirect-stdio` system property can be set to `true` to redirect
+to system log (logcat) instead. This takes effect after system restart
+(and has effect during current system session), so the complete command
+sequence to enable stdout logging is:
+
+```
+stop
+setprop log.redirect-stdio true
+start
+```
+
 ### How to list Android services?
 ```
 service list
