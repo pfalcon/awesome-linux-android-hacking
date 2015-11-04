@@ -183,6 +183,86 @@ More details:
 [Documentation/kbuild/modules.txt](http://www.kernel.org/doc/Documentation/kbuild/modules.txt).
 
 
+### How to connect to WiFi network from bare command-line (using wpa_supplicant & wpa_cli)
+If you're not on bare command-line, make sure you killed already running
+wpa_supplicant as well as other daemons which may respawn it (e.g.
+NetworkManager on Ubuntu).
+
+Make sure that WiFi interface is up. It otherwise doesn't need to have any
+special configuration:
+```
+ifconfig wlan0 up
+```
+
+Run:
+```
+wpa_supplicant -i wlan0 -g /tmp/wpa -C /tmp
+```
+
+`-g` specifies "global control socket". The caveat about is that many
+commands are not supported via it, issuing them via it leads to obfuscated
+"UNKNOWN COMMAND" reply. So, it's important to specify `-C` switch, which
+takes *directory* path under which individual control sockets for each
+WiFi interface will be stored.
+
+In another window, run:
+```
+wpa_cli -p /tmp
+```
+
+`-p` option gives path to per-WiFi-interface control socket dir (`-C` of
+wpa_supplicant). Issue following commands in wpa_cli interactive session
+(ignore # lines):
+
+```
+# Scan for available APs
+> scan
+OK
+# Wait a bit, then view results
+<3>CTRL-EVENT-SCAN-STARTED 
+<3>CTRL-EVENT-SCAN-RESULTS 
+> scan_results 
+...
+# Create new AP entry, returned is ID of new entry
+> add_network
+0
+# Start setting AP parameters
+> set_network 0 ssid "MY_AP"
+OK
+> set_network 0 psk "password"
+OK
+# These should be all params requires for WPA
+# Activate network
+> select_network 0
+OK
+# Trigger connection
+> reconnect
+OK
+<3>SME: Trying to authenticate with xx:xx:xx:xx:xx:xx (SSID='MY_AP' freq=2462 MHz)
+<3>Trying to associate with xx:xx:xx:xx:xx:xx (SSID='MY_AP' freq=2462 MHz)
+<3>Associated with xx:xx:xx:xx:xx:xx
+```
+
+This will have wlan0 connected to AP. Then get IP address via DHCP:
+```
+dhclient
+```
+
+And configure /etc/resolv.conf to suitable DNS address (e.g. 8.8.8.8 to
+be monitored by Google).
+
+The instructions above show how to run wpa_supplicant without any stored
+configuration, and instead configure it dynamically (e.g., programmatically).
+Alternatively, using config:
+```
+# Create simple config file
+wpa_passphrase MY_AP >wpa.conf
+# Enter password
+...
+wpa_supplicant -i wlan0 -c wpa.conf
+
+```
+
 ### How to test network multicasting
 Multicasting is basis of many usability protocols and services (e.g. mDNS,
 UPNP, DLNA, etc.), and yet means to query/test/diagnose it are not widely
