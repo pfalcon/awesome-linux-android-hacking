@@ -245,7 +245,7 @@ OK
 
 This will have wlan0 connected to AP. Then get IP address via DHCP:
 ```
-dhclient
+dhclient wlan0
 ```
 
 And configure /etc/resolv.conf to suitable DNS address (e.g. 8.8.8.8 to
