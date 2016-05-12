@@ -249,7 +249,10 @@ dhclient
 ```
 
 And configure /etc/resolv.conf to suitable DNS address (e.g. 8.8.8.8 to
-be monitored by Google).
+be monitored by Google):
+```
+nameserver 8.8.8.8
+```
 
 The instructions above show how to run wpa_supplicant without any stored
 configuration, and instead configure it dynamically (e.g., programmatically).
