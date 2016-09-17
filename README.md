@@ -183,6 +183,19 @@ More details:
 [Documentation/kbuild/modules.txt](http://www.kernel.org/doc/Documentation/kbuild/modules.txt).
 
 
+### How to setup NAT (masquerading)
+
+If you have another host/embedded device/QEMU connected to a local host interface,
+and you would like to let that device connect to the Internet, masquerading should
+be set up for device's IP address:
+
+```
+iptables -t nat -A POSTROUTING -j MASQUERADE -s 192.168.2.2
+```
+
+(This assumes that the host has Internet connection and has IP forwarding enabled).
+
+
 ### How to connect to WiFi network from bare command-line (using wpa_supplicant & wpa_cli)
 If you're not on bare command-line, make sure you killed already running
 wpa_supplicant as well as other daemons which may respawn it (e.g.
