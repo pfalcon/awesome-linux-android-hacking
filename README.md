@@ -1,3 +1,5 @@
+*(c) 2014-2018 Paul Sokolovsky. Portions of content (c) by their respective authors.*
+
 ## Linux
 
 ### How to find out version of kernel running
