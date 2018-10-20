@@ -42,7 +42,7 @@ newer messages may replace older.
 ### Is it possible to read kernel log if dmesg is not available?
 
 `cat /proc/kmsg` will block and dump ''new'' kernel messages. This
-will work reliably only if there are no other consumers of
+will work reliably only if there are no other consumer(s) of
 `/proc/kmsg` (note: on typical fully booted Linux system there's -
 syslogd, etc.), otherwise the output may be garbled.
 
