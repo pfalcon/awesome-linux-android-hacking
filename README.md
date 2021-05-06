@@ -473,7 +473,8 @@ cat /path/from >/path/to
 First of all, there's `/mnt/sdcard`, which is accessible to default
 `adb` user. However, that filesystem is mounted `noexec`, so it's not
 possible to run any executables from there. However, there's
-`/data/local` which is both writable and executable.
+`/data/local` which is both writable and executable. On newer Android
+versions (checked with Android 7), only `/data/local/tmp` is such.
 
 ### How to get temporary root access on ro.secure=1 devices
 
