@@ -367,7 +367,12 @@ setprop service.adb.tcp.port 6565
 start adbd
 ```
 
-Use `netcfg` to check device IP.
+Use `netcfg` to check device IP. (In newer Android versions, standard
+`ifconfig` or `ip addr` may work.)
+
+Per above (`su`), this requires a rooted device. An alternative is to
+connect device using USB first, and run `adb tcpip 6565`, after which
+USB cable can be disconnected.
 
 After that, on host:
 ```
