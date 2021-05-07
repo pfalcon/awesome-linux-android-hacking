@@ -345,6 +345,22 @@ reather from a real host address.
 
 ## Android
 
+### How to enable ADB connection on device
+
+This is called "USB debugging" and is available in Settings -> Developer
+options. Developer options themselves are concealed by default in
+Android 4.2 and higher. From https://developer.android.com/studio/debug/dev-options:
+
+> On Android 4.1 and lower, the Developer options screen is available by
+> default. On Android 4.2 and higher, you must enable this screen. To
+> enable developer options, tap the Build Number option 7 times. You
+> can find this option in one of the following locations, depending on
+> your Android version:
+>
+> * Android 9 (API level 28) and higher: Settings > About Phone > Build Number
+> * Android 8.0.0 (API level 26) and Android 8.1.0 (API level 26): Settings > System > About Phone > Build Number
+> * Android 7.1 (API level 25) and lower: Settings > About Phone > Build Number
+
 ### How to configure udev rules for using adb over USB
 
 Create `/etc/udev/rules.d/99-android.rules` with content:
